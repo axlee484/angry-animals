@@ -31,6 +31,7 @@ project/assembly_name="angry-animals"
 [global_group]
 
 block=""
+animal=""
 
 [input]
 

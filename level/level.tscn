@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://csogme756t84d"]
+[gd_scene load_steps=6 format=3 uid="uid://csogme756t84d"]
 
 [ext_resource type="Texture2D" uid="uid://behhs4gl0ybkh" path="res://assets/scene/colored_castle.png" id="1_7lnir"]
 [ext_resource type="Script" uid="uid://dv8g8lfvx6838" path="res://level/Level.cs" id="1_ktfr2"]
 [ext_resource type="PackedScene" uid="uid://bx1y4533jkjms" path="res://block/block.tscn" id="2_qohg2"]
 [ext_resource type="Script" uid="uid://bny6pb6f0dibu" path="res://level/DebugLabel.cs" id="4_vkbyq"]
+[ext_resource type="PackedScene" uid="uid://dlcbdju84qqll" path="res://water/water.tscn" id="5_ktfr2"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_ktfr2")
@@ -13,10 +14,10 @@ position = Vector2(511, 347)
 texture = ExtResource("1_7lnir")
 
 [node name="Block" parent="." instance=ExtResource("2_qohg2")]
-position = Vector2(160, 607)
+position = Vector2(848, 313)
 
 [node name="Block2" parent="." instance=ExtResource("2_qohg2")]
-position = Vector2(634, 556)
+position = Vector2(638, 545)
 
 [node name="DebugLabel" type="Label" parent="."]
 offset_right = 40.0
@@ -27,3 +28,5 @@ script = ExtResource("4_vkbyq")
 
 [node name="SpawnPosition" type="Marker2D" parent="."]
 position = Vector2(150, 418)
+
+[node name="Water" parent="." instance=ExtResource("5_ktfr2")]

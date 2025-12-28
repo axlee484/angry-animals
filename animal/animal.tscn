@@ -7,12 +7,13 @@
 [ext_resource type="AudioStream" uid="uid://dovqfdh8lo10p" path="res://assets/audio/kick_wood.ogg" id="5_31lnr"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bigh7"]
-bounce = 0.2
+rough = true
+bounce = 0.3
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bigh7"]
 radius = 18.248287
 
-[node name="Animal" type="RigidBody2D"]
+[node name="Animal" type="RigidBody2D" groups=["animal"]]
 input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_bigh7")
 freeze = true

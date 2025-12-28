@@ -1,9 +1,49 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx1y4533jkjms"]
+[gd_scene load_steps=8 format=3 uid="uid://bx1y4533jkjms"]
 
+[ext_resource type="Script" uid="uid://bcp6rbskpftjt" path="res://block/Block.cs" id="1_07jjg"]
 [ext_resource type="Texture2D" uid="uid://bfd7ad84wtif3" path="res://assets/env/elementWood004.png" id="1_p2cip"]
 [ext_resource type="Texture2D" uid="uid://ccwybppvir3hl" path="res://assets/env/elementWood015.png" id="2_07jjg"]
+[ext_resource type="AudioStream" uid="uid://coiq0dsgrlgq0" path="res://assets/audio/vanish.wav" id="4_sj7r8"]
+
+[sub_resource type="Animation" id="Animation_p2cip"]
+resource_name = "vanish"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.6, 0.6), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_07jjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprites:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_07jjg"]
+_data = {
+&"RESET": SubResource("Animation_07jjg"),
+&"vanish": SubResource("Animation_p2cip")
+}
 
 [node name="Block" type="StaticBody2D" groups=["block"]]
+script = ExtResource("1_07jjg")
 
 [node name="Sprites" type="Node2D" parent="."]
 scale = Vector2(0.5, 0.5)
@@ -24,3 +64,11 @@ texture = ExtResource("2_07jjg")
 position = Vector2(1.099998, -0.09687281)
 scale = Vector2(0.4829009, 0.48023757)
 polygon = PackedVector2Array(-109.96045, -101.831116, -112.03127, 33.518562, 107.47549, 33.518562, 107.47549, -95.584206, 45.350925, -35.19743, -41.623447, -35.19743)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_07jjg")
+}
+
+[node name="VanishSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_sj7r8")

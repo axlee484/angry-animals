@@ -36,7 +36,7 @@ public partial class Animal : RigidBody2D
         blockCollideSound = GetNode<AudioStreamPlayer2D>("BlockCollideSound");
 
         collisionCount = 0;
-        stoppingLimit = 0.1f;
+        stoppingLimit = 0.2f;
     }
 
     
@@ -65,10 +65,16 @@ public partial class Animal : RigidBody2D
 
     private void Release()
     {
+        var stretchAmount = GlobalPosition - initialAnimalPosition;
+        if(stretchAmount == Vector2.Zero)
+        {
+            isGrabbed = false;
+            isReleaseRequested = false;
+            return;
+        }
         isGrabbed = false;
         isReleased = true;
         Freeze = false;
-        var stretchAmount = GlobalPosition - initialAnimalPosition;
         ApplyCentralImpulse(-1*LAUNCH_IMPULSE*stretchAmount);
         isReleaseRequested = false;
         releaseSound.Play();
@@ -81,41 +87,29 @@ public partial class Animal : RigidBody2D
         return true;
     }
 
-    private void HandleBlockCollision()
+    private void HandleBlockCollision(Node2D body, bool newCollision)
     {
-        blockCollideSound.Play();
+        if(newCollision) blockCollideSound.Play();
+        if(IsRolling()) return;
+        if(body is Block block) block.Die();
+        Die();
         GD.Print("block collision") ;
     }
-
-    private void HandleDummyCollision()
-    {
-        GD.Print("dummy collision");
-    }
     private void PlayCollision()
-    {
-        
+    {        
         var collidingBodies = GetCollidingBodies();
-        var targets = new HashSet<string>([gameManager.GROUP_BLOCK, gameManager.GROUP_WATER]);
-
-        var hitTargets = new List<string>();
+        var newCollision = false;
+        var lastCollisionCount = collisionCount;
+        collisionCount = GetContactCount();
+        if(collisionCount > lastCollisionCount) {
+            newCollision = true;
+            collisionCount = GetContactCount();
+        }
         
         foreach (var body in collidingBodies)
         {
-            var groups = body.GetGroups();
-            foreach (var group in groups)
-            {
-                if(targets.Contains(group.ToString())) hitTargets.Add(group.ToString());
-            }
+            if(body.IsInGroup(gameManager.GROUP_BLOCK)) HandleBlockCollision(body, newCollision);
         }
-
-        foreach(var hitTarget in hitTargets)
-        {
-            if(hitTarget == gameManager.GROUP_BLOCK) HandleBlockCollision();
-            if(hitTarget == gameManager.GROUP_WATER) HandleDummyCollision();
-        }
-
-        if(IsRolling()) return;
-        Die();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -128,13 +122,16 @@ public partial class Animal : RigidBody2D
         if(isReleaseRequested) Release();
     }
 
-    private void Die()
+    private void DefferedDie()
     {
-        if(!isAlive) return;
-        
+      if(!isAlive) return;
         isAlive = false;
         signalManager.EmitSignal(SignalManager.SignalName.AnimalDied);
-        QueueFree();
+        QueueFree();  
+    }
+    public void Die()
+    {
+        CallDeferred(nameof(DefferedDie));
     }
 
     public void OnScreenExited()
