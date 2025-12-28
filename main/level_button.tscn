@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcftfgugsxktt"]
+
+[ext_resource type="Script" uid="uid://x7iqlil1eid" path="res://main/LevelButton.cs" id="1_1cf2q"]
+[ext_resource type="Texture2D" uid="uid://bgxfo0rdugbw2" path="res://assets/ui/panel_beige.png" id="1_ldbs5"]
+[ext_resource type="FontFile" uid="uid://buff7w4r8bbl2" path="res://assets/LG_20_white.tres" id="2_jjk1n"]
+
+[node name="LevelButton" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1cf2q")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_ldbs5")
+
+[node name="MC" type="MarginContainer" parent="TextureButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VB" type="VBoxContainer" parent="TextureButton/MC"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LevelName" type="Label" parent="TextureButton/MC/VB"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_jjk1n")
+theme_override_font_sizes/font_size = 36
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighSCore" type="Label" parent="TextureButton/MC/VB"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_shadow_color = Color(0.007843138, 0.007843138, 0.007843138, 0.6901961)
+theme_override_fonts/font = ExtResource("2_jjk1n")
+theme_override_font_sizes/font_size = 18
+text = "1000"
+
+[connection signal="mouse_entered" from="TextureButton" to="." method="OnMouseEntered"]
+[connection signal="mouse_exited" from="TextureButton" to="." method="OnMouseExited"]
+[connection signal="pressed" from="TextureButton" to="." method="OnPressed"]

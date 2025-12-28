@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://dpbreewq5o540"]
+
+[ext_resource type="Texture2D" uid="uid://chhnuwbx7a8av" path="res://assets/env/MainBG.png" id="1_53q0u"]
+[ext_resource type="AudioStream" uid="uid://dwn13jg22cpcb" path="res://assets/audio/birdsong.wav" id="2_pjrb6"]
+[ext_resource type="FontFile" uid="uid://j15ux4avd875" path="res://assets/fonts/LuckiestGuy-Regular.ttf" id="3_xwkvk"]
+[ext_resource type="PackedScene" uid="uid://bcftfgugsxktt" path="res://main/level_button.tscn" id="4_c651c"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_c651c"]
+font = ExtResource("3_xwkvk")
+font_size = 72
+font_color = Color(0.41019306, 0.73251414, 0.80812573, 1)
+shadow_size = 5
+shadow_color = Color(0.07058824, 0.07058824, 0.07058824, 0.7254902)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_53q0u")
+expand_mode = 5
+
+[node name="BgSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_pjrb6")
+autoplay = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+rotation = 0.034906585
+theme_override_constants/margin_top = 32
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+text = "Angry Animals"
+label_settings = SubResource("LabelSettings_c651c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 160
+alignment = 1
+
+[node name="LevelButton" parent="HBoxContainer" instance=ExtResource("4_c651c")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LevelButton2" parent="HBoxContainer" instance=ExtResource("4_c651c")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+LEVEL = 2
+
+[node name="LevelButton3" parent="HBoxContainer" instance=ExtResource("4_c651c")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+LEVEL = 3
