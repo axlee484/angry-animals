@@ -12,8 +12,10 @@ public partial class Animal : RigidBody2D
     private bool isReleaseRequested;
     private Vector2 initialMousePosition;
     private Vector2 initialAnimalPosition;
-    private AudioStreamPlayer2D stretchSoundNode;
-    private AudioStreamPlayer2D releaseSoundNode;
+    private AudioStreamPlayer2D stretchSound;
+    private AudioStreamPlayer2D releaseSound;
+    private AudioStreamPlayer2D blockCollideSound;
+    private int collisionCount;
     [Export] private Vector2 STRETCH_LIMIT = new(-80,80);
     [Export] private float LAUNCH_IMPULSE = 20.0f;
 
@@ -24,8 +26,11 @@ public partial class Animal : RigidBody2D
         isReleased = false;
         isSoundReady = false;
         signalManager = GetNode<SignalManager>("/root/SignalManager");
-        stretchSoundNode = GetNode<AudioStreamPlayer2D>("StretchSound");
-        releaseSoundNode = GetNode<AudioStreamPlayer2D>("LaunchSound");
+        stretchSound = GetNode<AudioStreamPlayer2D>("StretchSound");
+        releaseSound = GetNode<AudioStreamPlayer2D>("LaunchSound");
+        blockCollideSound = GetNode<AudioStreamPlayer2D>("BlockCollideSound");
+
+        collisionCount = 0;
     }
 
     
@@ -44,8 +49,8 @@ public partial class Animal : RigidBody2D
             return;
         }
 
-        if(!stretchSoundNode.Playing && isSoundReady) {
-            stretchSoundNode.Play();
+        if(!stretchSound.Playing && isSoundReady) {
+            stretchSound.Play();
             isSoundReady = false;
         }
         GlobalPosition = newPosition;
@@ -60,11 +65,23 @@ public partial class Animal : RigidBody2D
         var stretchAmount = GlobalPosition - initialAnimalPosition;
         ApplyCentralImpulse(-1*LAUNCH_IMPULSE*stretchAmount);
         isReleaseRequested = false;
-        releaseSoundNode.Play();
+        releaseSound.Play();
+    }
+
+    private void PlayCollision()
+    {
+        var lastCollisionCount = collisionCount;
+        collisionCount = GetContactCount();
+
+        if(collisionCount > lastCollisionCount) {
+            blockCollideSound.Play();   
+        }
+
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        if(isReleased) PlayCollision();
         if(isGrabbed && !isReleased) Stretch();
         if(isReleaseRequested) Release();
     }

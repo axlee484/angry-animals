@@ -1,12 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://chlpg14125x50"]
+[gd_scene load_steps=8 format=3 uid="uid://chlpg14125x50"]
 
 [ext_resource type="Script" uid="uid://dufjqqf5cewqy" path="res://animal/Animal.cs" id="1_16r35"]
 [ext_resource type="Texture2D" uid="uid://crorlva3wbg07" path="res://assets/player/parrot.png" id="1_bigh7"]
 [ext_resource type="AudioStream" uid="uid://b6gbx2111a47l" path="res://assets/audio/stretch2.ogg" id="3_gay6y"]
 [ext_resource type="AudioStream" uid="uid://dcpr1t4offmqd" path="res://assets/audio/catapult.ogg" id="4_734q8"]
+[ext_resource type="AudioStream" uid="uid://dovqfdh8lo10p" path="res://assets/audio/kick_wood.ogg" id="5_31lnr"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bigh7"]
-bounce = 0.2
+bounce = 0.8
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bigh7"]
 radius = 18.248287
@@ -15,6 +16,8 @@ radius = 18.248287
 input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_bigh7")
 freeze = true
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_16r35")
 STRETCH_LIMIT = Vector2(-60, 60)
 
@@ -34,6 +37,9 @@ stream = ExtResource("3_gay6y")
 
 [node name="LaunchSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_734q8")
+
+[node name="BlockCollideSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_31lnr")
 
 [connection signal="input_event" from="." to="." method="OnInputEvent"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited"]
