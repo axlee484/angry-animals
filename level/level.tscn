@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://csogme756t84d"]
+
+[ext_resource type="Texture2D" uid="uid://behhs4gl0ybkh" path="res://assets/scene/colored_castle.png" id="1_7lnir"]
+[ext_resource type="Script" uid="uid://dv8g8lfvx6838" path="res://level/Level.cs" id="1_ktfr2"]
+[ext_resource type="PackedScene" uid="uid://bx1y4533jkjms" path="res://block/block.tscn" id="2_qohg2"]
+[ext_resource type="Script" uid="uid://bny6pb6f0dibu" path="res://level/DebugLabel.cs" id="4_vkbyq"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_ktfr2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(511, 347)
+texture = ExtResource("1_7lnir")
+
+[node name="Block" parent="." instance=ExtResource("2_qohg2")]
+position = Vector2(742, 533)
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Debug"
+script = ExtResource("4_vkbyq")
+
+[node name="SpawnPosition" type="Marker2D" parent="."]
+position = Vector2(150, 418)
