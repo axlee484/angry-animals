@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bfd7ad84wtif3" path="res://assets/env/elementWood004.png" id="1_p2cip"]
 [ext_resource type="Texture2D" uid="uid://ccwybppvir3hl" path="res://assets/env/elementWood015.png" id="2_07jjg"]
 
-[node name="Block" type="StaticBody2D"]
+[node name="Block" type="StaticBody2D" groups=["block"]]
 
 [node name="Sprites" type="Node2D" parent="."]
 scale = Vector2(0.5, 0.5)

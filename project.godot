@@ -16,6 +16,7 @@ config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 [autoload]
 
 SignalManager="*res://singletons/SignalManager.cs"
+GameManager="*res://singletons/GameManager.cs"
 
 [display]
 
@@ -26,6 +27,10 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="angry-animals"
+
+[global_group]
+
+block=""
 
 [input]
 

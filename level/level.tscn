@@ -16,7 +16,7 @@ texture = ExtResource("1_7lnir")
 position = Vector2(160, 607)
 
 [node name="Block2" parent="." instance=ExtResource("2_qohg2")]
-position = Vector2(154, 385)
+position = Vector2(634, 556)
 
 [node name="DebugLabel" type="Label" parent="."]
 offset_right = 40.0

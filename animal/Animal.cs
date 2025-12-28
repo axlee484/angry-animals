@@ -1,10 +1,13 @@
 using Godot;
+using Godot.Collections;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 public partial class Animal : RigidBody2D
 {
     private SignalManager signalManager;
+    private GameManager gameManager;
     private bool isAlive;
     private bool isGrabbed;
     private bool isReleased;
@@ -16,6 +19,7 @@ public partial class Animal : RigidBody2D
     private AudioStreamPlayer2D releaseSound;
     private AudioStreamPlayer2D blockCollideSound;
     private int collisionCount;
+    private float stoppingLimit;
     [Export] private Vector2 STRETCH_LIMIT = new(-80,80);
     [Export] private float LAUNCH_IMPULSE = 20.0f;
 
@@ -26,11 +30,13 @@ public partial class Animal : RigidBody2D
         isReleased = false;
         isSoundReady = false;
         signalManager = GetNode<SignalManager>("/root/SignalManager");
+        gameManager = GetNode<GameManager>("/root/GameManager");
         stretchSound = GetNode<AudioStreamPlayer2D>("StretchSound");
         releaseSound = GetNode<AudioStreamPlayer2D>("LaunchSound");
         blockCollideSound = GetNode<AudioStreamPlayer2D>("BlockCollideSound");
 
         collisionCount = 0;
+        stoppingLimit = 0.1f;
     }
 
     
@@ -68,20 +74,56 @@ public partial class Animal : RigidBody2D
         releaseSound.Play();
     }
 
+
+    private bool IsRolling()
+    {
+        if(Math.Abs(AngularVelocity) <= stoppingLimit && Math.Abs(LinearVelocity.Y)<= stoppingLimit ) return false;
+        return true;
+    }
+
+    private void HandleBlockCollision()
+    {
+        blockCollideSound.Play();
+        GD.Print("block collision") ;
+    }
+
+    private void HandleDummyCollision()
+    {
+        GD.Print("dummy collision");
+    }
     private void PlayCollision()
     {
-        var lastCollisionCount = collisionCount;
-        collisionCount = GetContactCount();
+        
+        var collidingBodies = GetCollidingBodies();
+        var targets = new HashSet<string>([gameManager.GROUP_BLOCK, gameManager.GROUP_WATER]);
 
-        if(collisionCount > lastCollisionCount) {
-            blockCollideSound.Play();   
+        var hitTargets = new List<string>();
+        
+        foreach (var body in collidingBodies)
+        {
+            var groups = body.GetGroups();
+            foreach (var group in groups)
+            {
+                if(targets.Contains(group.ToString())) hitTargets.Add(group.ToString());
+            }
         }
 
+        foreach(var hitTarget in hitTargets)
+        {
+            if(hitTarget == gameManager.GROUP_BLOCK) HandleBlockCollision();
+            if(hitTarget == gameManager.GROUP_WATER) HandleDummyCollision();
+        }
+
+        if(IsRolling()) return;
+        Die();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if(isReleased) PlayCollision();
+        if(isReleased)
+        {
+            PlayCollision();
+        }
         if(isGrabbed && !isReleased) Stretch();
         if(isReleaseRequested) Release();
     }
