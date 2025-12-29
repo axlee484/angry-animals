@@ -95,7 +95,7 @@ public partial class Level : Node2D
 			if(scoreManager.Score < bestScore) scoreManager.levelBestScore[scoreManager.Level] = scoreManager.Attempts;
 			UpdateUi();
 		}
-		scoreManager.GetScore();
+		// scoreManager.GetScore();
 	}
 
 	public override void _ExitTree()

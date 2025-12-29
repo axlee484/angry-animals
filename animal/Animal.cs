@@ -97,7 +97,7 @@ public partial class Animal : RigidBody2D
 		if(IsRolling()) return;
 		if(body is Block block) block.Die();
 		Die();
-		GD.Print("block collision") ;
+		// GD.Print("block collision") ;
 	}
 	private void PlayCollision()
 	{        
