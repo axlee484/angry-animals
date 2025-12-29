@@ -102,6 +102,7 @@ public partial class Level : Node2D
 	{
 		signalManager.BlockDied -= OnBlockDied;
 		signalManager.AnimalDied -= SpawnAnimal;
+		signalManager.AttempComplete -= UpdateUi;
 		
 	}
 }
