@@ -1,0 +1,87 @@
+[gd_scene load_steps=3 format=3 uid="uid://64dr44jfctbn"]
+
+[ext_resource type="FontFile" uid="uid://buff7w4r8bbl2" path="res://assets/LG_20_white.tres" id="1_0o6s6"]
+[ext_resource type="Script" uid="uid://dn00y2tlhhocj" path="res://gameui/GameUi.cs" id="1_t3s1l"]
+
+[node name="GameUI" type="CanvasLayer"]
+script = ExtResource("1_t3s1l")
+
+[node name="MC" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="VBScore" type="HBoxContainer" parent="MC"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="VBLevel" type="VBoxContainer" parent="MC/VBScore"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Level" type="Label" parent="MC/VBScore/VBLevel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.24284464, 0.73995405, 0.858, 1)
+theme_override_fonts/font = ExtResource("1_0o6s6")
+theme_override_font_sizes/font_size = 20
+text = "Level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Attempts" type="Label" parent="MC/VBScore/VBLevel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.24284464, 0.73995405, 0.858, 1)
+theme_override_fonts/font = ExtResource("1_0o6s6")
+theme_override_font_sizes/font_size = 20
+text = "Attempts"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBBest" type="VBoxContainer" parent="MC/VBScore"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+alignment = 2
+
+[node name="BestScore" type="Label" parent="MC/VBScore/VBBest"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.24284464, 0.73995405, 0.858, 1)
+theme_override_fonts/font = ExtResource("1_0o6s6")
+theme_override_font_sizes/font_size = 20
+text = "Best Score"
+
+[node name="VBGame" type="VBoxContainer" parent="MC"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="GameOver" type="Label" parent="MC/VBGame"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.24313726, 0.7411765, 0.85882354, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_0o6s6")
+theme_override_font_sizes/font_size = 64
+text = "Game OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PressSpace" type="Label" parent="MC/VBGame"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_0o6s6")
+text = "Press Space to continue"
+horizontal_alignment = 1
+vertical_alignment = 1

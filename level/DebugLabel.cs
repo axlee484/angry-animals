@@ -8,5 +8,6 @@ public partial class DebugLabel : Label
         var signalManager = GetNode<SignalManager>("/root/SignalManager");
         signalManager.UpdateDebugLabel += text => Text = text + "\n";
     }
+    
 
 }

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5syc58obgjiv"]
+
+[ext_resource type="PackedScene" uid="uid://csogme756t84d" path="res://level/level.tscn" id="1_yk0wt"]
+[ext_resource type="PackedScene" uid="uid://bx1y4533jkjms" path="res://block/block.tscn" id="2_j4cam"]
+
+[node name="Level3" instance=ExtResource("1_yk0wt")]
+
+[node name="Block" parent="." index="3" instance=ExtResource("2_j4cam")]
+position = Vector2(877, 260)
+
+[node name="Block2" parent="." index="4" instance=ExtResource("2_j4cam")]
+position = Vector2(809, 550)
+
+[node name="Block3" parent="." index="5" instance=ExtResource("2_j4cam")]
+position = Vector2(565, 408)

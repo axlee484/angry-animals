@@ -3,25 +3,76 @@ using System;
 
 public partial class Level : Node2D
 {
-    private SignalManager signalManager;
-    private PackedScene animalScene;
-    private Marker2D spawnPositionNode;
-
-    public override void _Ready()
-    {
-        signalManager = GetNode<SignalManager>("/root/SignalManager");
-        signalManager.AnimalDied += SpawnAnimal;
+	private SignalManager signalManager;
+	private PackedScene animalScene;
+	private Marker2D spawnPositionNode;
+	private GameUi gameUi;
+	private GameManager gameManager;
+	private ScoreManager scoreManager;
 
 
-        animalScene = GD.Load<PackedScene>("res://animal/animal.tscn"); 
-        spawnPositionNode = GetNode<Marker2D>("SpawnPosition");
-        SpawnAnimal();
-    }
+	private void UpdateUi()
+	{
+		var levelNode = gameUi.GetNode<Label>("MC/VBScore/VBLevel/Level");
+		var attemptsNode = gameUi.GetNode<Label>("MC/VBScore/VBLevel/Attempts");
+		var bestScoreNode = gameUi.GetNode<Label>("MC/VBScore/VBBest/BestScore");
 
-    private void SpawnAnimal()
-    {
-        var animalNode = animalScene.Instantiate<Animal>();
-        animalNode.Position = spawnPositionNode.Position;
-        AddChild(animalNode);
-    }
+		levelNode.Text = "Level "+ scoreManager.Level.ToString();
+		attemptsNode.Text = scoreManager.Attempts.ToString();
+		bestScoreNode.Text = scoreManager.levelBestScore[scoreManager.Level].ToString();
+	}
+
+	private void SetInitialScore()
+	{
+		scoreManager.Reset();
+		var blocks = GetTree().GetNodesInGroup(gameManager.GROUP_BLOCK);
+		scoreManager.Blocks = blocks.Count;
+		UpdateUi();
+	}
+
+	public override void _Ready()
+	{
+		signalManager = GetNode<SignalManager>("/root/SignalManager");
+		signalManager.AnimalDied += SpawnAnimal;
+		signalManager.BlockDied += OnBlockDied;
+		signalManager.AttempComplete += UpdateUi;
+		gameManager = GetNode<GameManager>("/root/GameManager");
+		scoreManager = GetNode<ScoreManager>("/root/ScoreManager");
+		animalScene = GD.Load<PackedScene>("res://animal/animal.tscn"); 
+		spawnPositionNode = GetNode<Marker2D>("SpawnPosition");
+		gameUi = GetNode<GameUi>("GameUI");
+		SetInitialScore();
+		SpawnAnimal();
+	}
+
+	public override void _Process(double delta)
+	{
+		if(Input.IsKeyPressed(Key.Escape)) gameManager.LoadMain();
+	}
+
+	private void SpawnAnimal()
+	{
+		var animalNode = animalScene.Instantiate<Animal>();
+		animalNode.Position = spawnPositionNode.Position;   
+		scoreManager.GetScore();
+		AddChild(animalNode);
+	}
+
+	private void OnBlockDied()
+	{
+		scoreManager.Blocks --;
+		if(scoreManager.Blocks <= 0) {
+			scoreManager.Blocks = 0;
+			var bestScore = scoreManager.levelBestScore[scoreManager.Level];
+			if(scoreManager.Score < bestScore) scoreManager.levelBestScore[scoreManager.Level] = scoreManager.Attempts;
+		}
+		scoreManager.GetScore();
+	}
+
+	public override void _ExitTree()
+	{
+		signalManager.BlockDied -= OnBlockDied;
+		signalManager.AnimalDied -= SpawnAnimal;
+		
+	}
 }

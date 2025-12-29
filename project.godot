@@ -11,12 +11,14 @@ config_version=5
 [application]
 
 config/name="angry-animals"
+run/main_scene="uid://dpbreewq5o540"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 
 [autoload]
 
 SignalManager="*res://singletons/SignalManager.cs"
 GameManager="*res://singletons/GameManager.cs"
+ScoreManager="*res://singletons/ScoreManager.cs"
 
 [display]
 
