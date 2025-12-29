@@ -9,6 +9,7 @@ public partial class Level : Node2D
 	private GameUi gameUi;
 	private GameManager gameManager;
 	private ScoreManager scoreManager;
+	private bool isGameOver;
 
 
 	private void UpdateUi()
@@ -20,6 +21,12 @@ public partial class Level : Node2D
 		levelNode.Text = "Level "+ scoreManager.Level.ToString();
 		attemptsNode.Text = scoreManager.Attempts.ToString();
 		bestScoreNode.Text = scoreManager.levelBestScore[scoreManager.Level].ToString();
+	}
+
+	private void ShowGameOver()
+	{
+		var gameOverNode = gameUi.GetNode<VBoxContainer>("MC/VBGameOver");
+		gameOverNode.Visible = true;
 	}
 
 	private void SetInitialScore()
@@ -41,20 +48,41 @@ public partial class Level : Node2D
 		animalScene = GD.Load<PackedScene>("res://animal/animal.tscn"); 
 		spawnPositionNode = GetNode<Marker2D>("SpawnPosition");
 		gameUi = GetNode<GameUi>("GameUI");
+
+		isGameOver = false;
 		SetInitialScore();
 		SpawnAnimal();
 	}
 
 	public override void _Process(double delta)
 	{
-		if(Input.IsKeyPressed(Key.Escape)) gameManager.LoadMain();
+		if(!isGameOver && scoreManager.Blocks <= 0)
+		{
+			ShowGameOver();
+			isGameOver = true;
+			return;
+		}
+		if(isGameOver)
+		{
+			if(Input.IsActionJustPressed("space"))
+			{
+				gameManager.LoadMain();
+			}
+			return;
+		}
+
+		if(Input.IsKeyPressed(Key.Escape))
+		{
+			gameManager.LoadMain();
+		}
 	}
 
 	private void SpawnAnimal()
 	{
+		if(scoreManager.Blocks<=0) return;
+
 		var animalNode = animalScene.Instantiate<Animal>();
 		animalNode.Position = spawnPositionNode.Position;   
-		scoreManager.GetScore();
 		AddChild(animalNode);
 	}
 
@@ -65,6 +93,7 @@ public partial class Level : Node2D
 			scoreManager.Blocks = 0;
 			var bestScore = scoreManager.levelBestScore[scoreManager.Level];
 			if(scoreManager.Score < bestScore) scoreManager.levelBestScore[scoreManager.Level] = scoreManager.Attempts;
+			UpdateUi();
 		}
 		scoreManager.GetScore();
 	}
